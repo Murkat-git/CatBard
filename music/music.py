@@ -89,6 +89,15 @@ class Music(commands.Cog):
                 print(
                     f"[music-cord] ERROR - Failed to create node {config['host']}:{config['port']}")
 
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        if member.id == self.bot.user.id and before.channel is not None and after.channel is None:
+            player: CatPlayer = next(
+                i for i in self.bot.voice_clients if i.channel == before.channel)
+
+            await player.destroy()
+            self.bot.dispatch("catmusic_player_stop", player)
+
     @slash_command(aliases=["con"])
     @voice_connected()
     async def connect(self, ctx: commands.Context):

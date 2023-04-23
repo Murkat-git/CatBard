@@ -13,6 +13,7 @@ from music.events import MusicEvents
 
 import dotenv
 import os
+
 dotenv.load_dotenv()
 token = str(os.getenv("TOKEN"))
 
